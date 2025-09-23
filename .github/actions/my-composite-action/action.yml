@@ -17,12 +17,5 @@ runs:
       with:
         node-version: ${{ inputs.node-version }}
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Use my composite action
-        uses: ./.github/actions/my-composite-action
-        with:
-          node-version: '18'
+
 
