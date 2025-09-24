@@ -1,19 +1,11 @@
 name: "My Composite Action"
-description: "A reusable composite action that checks out code and sets up Node.js"
+description: "A reusable composite action that checks out code, sets up Node.js, and runs a script"
 
 inputs:
   node-version:
     description: "The Node.js version to use"
     required: true
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Use my composite action
-        uses: ./.github/actions/my-composite-action
-        with:
-          node-version: '18'
 outputs:
   script-result:
     description: "Result from the script"
@@ -22,21 +14,15 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - id: run-script
-      run: echo "result=Success" >> $GITHUB_OUTPUT
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ inputs.node-version }}
+
+    - name: Run custom script
+      id: run-script
+      run: ./.github/actions/my-composite-action/scripts/my-script.sh
       shell: bash
-# runs:
-#   using: "composite"
-#   steps:
-#     - name: Checkout repository
-#       uses: actions/checkout@v4
-
-#     - name: Set up Node.js
-#       uses: actions/setup-node@v4
-#       with:
-#         node-version: ${{ inputs.node-version }}
-
-
-
-
-
